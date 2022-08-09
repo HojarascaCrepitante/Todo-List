@@ -33,25 +33,8 @@ const initialPage = function(){
         mainHeader.append(title,optionList)
     container.appendChild(mainHeader)
 
-        const sideBar = document.createElement('div')
+    const sideBar = document.createElement('div')
         sideBar.classList.add('sidebar')
-            const sidebarList = document.createElement('ul')
-                const allProjects_Li = document.createElement('li')
-                    const allProjects_link = document.createElement('button')        
-                        allProjects_link.textContent = 'All Projects'
-                allProjects_Li.appendChild(allProjects_link)
-
-                const completedProjects_Li = document.createElement('li')
-                const completedProjects_link = document.createElement('button')        
-                    completedProjects_link.textContent = 'Finished'
-                completedProjects_Li.appendChild(completedProjects_link)
-
-                const importantProjects_Li = document.createElement('li')
-                const importantProjects_link = document.createElement('button')        
-                    importantProjects_link.textContent = 'Important'
-                importantProjects_Li.appendChild(importantProjects_link)
-            sidebarList.append(allProjects_Li,importantProjects_Li,completedProjects_Li)
-        sideBar.appendChild(sidebarList)
     container.appendChild(sideBar)
 
         const content = document.createElement('div')

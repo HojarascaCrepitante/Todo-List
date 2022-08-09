@@ -28,6 +28,7 @@ body{
   justify-content: center;
   align-items: center;
   width: 500px;
+  height: max-content;
   background-color: rgb(134, 173, 207);
 }
 form input{
@@ -57,4 +58,24 @@ form textarea{
 }
 .sidebar{
     background-color: salmon;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.todo{
+    display: flex;
+    flex-direction: column;
+    border-style: solid;
+    background-color: aquamarine;
+    width: 300px;
+}
+.project-list{
+    display: flex;
+    flex-direction: column;
+}
+section{
+    display: flex;
+    flex-direction: row-reverse;
+    padding: 10px;
+    text-align: center;
 }

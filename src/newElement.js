@@ -1,5 +1,5 @@
 import './style.css'
-import {createEvent,createProject} from './Logic'
+import {createEvent,createProject,getProjectList} from './Logic'
 
 
 const newElementForm = function (){
@@ -31,13 +31,6 @@ const newElementForm = function (){
             input_text_duedate.type = 'date'
             input_text_duedate.setAttribute('id', 'dueDate')
 
-        const label_4 = document.createElement('label')
-            label_4.htmlFor = 'priority'
-            label_4.textContent = 'Important?'
-        const input_text_priority = document.createElement('input')
-            input_text_priority.type = 'checkbox'
-            input_text_priority.setAttribute('id','priority')
-
         const submitButton = document.createElement('button')
             submitButton.textContent = 'Create!'
             submitButton.type = 'button'
@@ -47,7 +40,25 @@ const newElementForm = function (){
             cancelButton.textContent = 'Cancel'
             cancelButton.type = 'reset'
     
-    form.append(formTitle, label_1, input_text_title, label_2,input_text_description, label_3, input_text_duedate, label_4, input_text_priority, submitButton,cancelButton)
+    form.append(formTitle, label_1, input_text_title, label_2,input_text_description, label_3, input_text_duedate, submitButton,cancelButton)
+    
+    let div = document.createElement('div')
+                    div.classList.add("project-list")
+    
+        let availableProjects = getProjectList()
+            availableProjects.forEach((el)=>{
+                let container = document.createElement('section')
+                let label = document.createElement('label')
+                    label.textContent = el.title;
+                    label.htmlFor = el.id
+                let check = document.createElement('input')
+                    check.classList.add('project-form')
+                    check.type = 'checkbox'
+                    check.dataset.index = el.id
+                container.append(label,check)
+                div.append(container)
+                form.append(div)
+            })
     formContainer.appendChild(form)
 
     return formContainer

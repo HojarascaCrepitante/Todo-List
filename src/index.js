@@ -1,4 +1,9 @@
 import initialPage from "./initialPageLoad";
-import newElementForm from "./newElement"
+import {loopThroughArray, addListener,retrieve} from "./Logic"
 
 document.body.appendChild(initialPage())
+
+loopThroughArray()
+retrieve()
+addListener()
+
