@@ -41,20 +41,62 @@ const createTodoCards = function(el){
 
           let buttonArea = document.createElement('div')
             buttonArea.classList.add("options")
-            let removeTodo = document.createElement('button')
-              removeTodo.textContent = "Delete"
-              removeTodo.dataset.index = el.id
+            let remove = document.createElement('button')
+              remove.addEventListener('click', ()=>{
+                for (let i = 0; i < projectList.length; i++) {
+                  if(projectList[i].myEvents.length > 0){
+                   todoCard.remove()
+                   let removeEventFromArray = projectList[i].myEvents.filter(x => x.id !== el.id)
+                   projectList[i].myEvents = removeEventFromArray
+                   
+                }                
+              }
+              store()
+              })
+              remove.textContent = "Delete"
+              
 
           let markComplete = document.createElement('button')
-              markComplete.textContent = "Done"
-              markComplete.dataset.index = el.id
-          buttonArea.append(markComplete,removeTodo)
+            markComplete.textContent = "Done"
+            markComplete.addEventListener('click', ()=>{
+             let completed = ""
+              for (let i = 0; i < projectList.length; i++) {
+                if(projectList[i].myEvents.length > 0){
+                 todoCard.remove()
+                 completed = projectList[i].myEvents.find(x => x.id == el.id)
+                 let removeCompletedFromArray = projectList[i].myEvents.filter(x => x.id !== el.id)
+                 projectList[i].myEvents = removeCompletedFromArray
+                 }
+              }     
+              projectList[2].myEvents.push(completed)        
+              
+              store()     
+            })
+            
+          buttonArea.append(markComplete,remove)
         todoCard.append(title,description,dueDate,remainingTime,buttonArea)
         document.querySelector('.content').appendChild(todoCard)
 }
 
+const completedTodoCards = function(element){
+  let todoCard = document.createElement('div')
+        todoCard.classList.add('todo')
+        todoCard.dataset.reference = element.id
+        let title = document.createElement('div')
+        let titleText = document.createElement('p')
+          titleText.textContent = `Title : ${element.title}`
+          title.appendChild(titleText)
+        let description = document.createElement('div')
+        let descriptionText = document.createElement('p')
+          descriptionText.textContent = `Description : ${element.description}`
+          description.appendChild(descriptionText)
+        todoCard.append(title,description)
+        document.querySelector('.content').appendChild(todoCard)  
+}
+
 const displayMyEvents = function(){
   let toDIsplay = projectList.find(x => x.id == this.dataset.index)
+  if(this.dataset.index !== "12"){
   if(document.querySelector('.todo')){
     document.querySelectorAll('.todo').forEach(el => el.remove())
     toDIsplay.myEvents.forEach(el=> createTodoCards(el))
@@ -62,7 +104,19 @@ const displayMyEvents = function(){
    else if(!document.querySelector('.todo')){
     toDIsplay.myEvents.forEach(el => createTodoCards(el))
    }
+  }
+  else if(this.dataset.index == "12"){
+    if(document.querySelector('.todo')){
+      document.querySelectorAll('.todo').forEach(el => el.remove())
+      toDIsplay.myEvents.forEach(el=> completedTodoCards(el))
+     }
+     else if(!document.querySelector('.todo')){
+      toDIsplay.myEvents.forEach(el => completedTodoCards(el))
+     }
+  }
+ 
 }
+
 
 const setId = function(){
   return Math.floor(Math.random() * 1000)
@@ -82,10 +136,27 @@ const projectFactory = function(title){
 const displayList = function(el){
   let projectDom = document.createElement('div')
     projectDom.classList.add('project')
-    projectDom.dataset.index = el.id
-    let text = document.createElement('p')
+    
+    let number = document.createElement('p')
+     number.textContent = el.myEvents.length
+     number.classList.add('counter')
+    let text = document.createElement('button')
       text.textContent = el.title
-    projectDom.appendChild(text)
+      text.classList.add("project-click")
+      text.dataset.index = el.id
+    let deleteButton = document.createElement('button')
+      deleteButton.textContent = "X"
+      deleteButton.classList.add('delete')
+      deleteButton.addEventListener('click', ()=>{
+       projectList = projectList.filter(element => element.id !== el.id)
+        store()
+        loopThroughArray()
+      })
+  
+    projectDom.append(number,text)
+      if(el.title !== "All Projects" && el.title !== "Important" && el.title !== "Completed"){
+        projectDom.appendChild(deleteButton)
+      }
     document.querySelector('.sidebar').appendChild(projectDom)
 }
 
@@ -132,13 +203,14 @@ const createEvent = function(){
         toAdd.myEvents.push(event)
           console.log(projectList)
     }
+    if(!projectList[0].myEvents.includes(event))
     projectList[0].myEvents.push(event)
     store()
     createTodoCards(event)
   return event
 }
 const addListener = function(){
-  let projectToDisplay = document.querySelectorAll('.project')
+  let projectToDisplay = document.querySelectorAll('.project-click')
       projectToDisplay.forEach(el => el.addEventListener('click', displayMyEvents))
 }
 
@@ -152,7 +224,13 @@ const retrieve = function(){
   console.log(projectList)
   loopThroughArray()
 }
-
 }
+
+
+
+
+ 
+   
+ 
 
 export  {createEvent, createProject, loopThroughArray, getProjectList, addListener,retrieve}

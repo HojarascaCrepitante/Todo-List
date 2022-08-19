@@ -1,6 +1,9 @@
 import './style.css'
 import {createEvent,createProject,getProjectList} from './Logic'
 
+const removeForm = function (){
+ document.getElementById('form-container').remove()
+}
 
 const newElementForm = function (){
     const formContainer = document.createElement('div')
@@ -31,22 +34,26 @@ const newElementForm = function (){
             input_text_duedate.type = 'date'
             input_text_duedate.setAttribute('id', 'dueDate')
 
+        const buttonArea = document.createElement('div')
+            buttonArea.classList.add("buttons")
         const submitButton = document.createElement('button')
             submitButton.textContent = 'Create!'
             submitButton.type = 'button'
             submitButton.addEventListener('click', createEvent)
 
         const cancelButton = document.createElement('button')
+            cancelButton.addEventListener('click', removeForm)
             cancelButton.textContent = 'Cancel'
             cancelButton.type = 'reset'
-    
-    form.append(formTitle, label_1, input_text_title, label_2,input_text_description, label_3, input_text_duedate, submitButton,cancelButton)
+    buttonArea.append(submitButton,cancelButton)
+    form.append(formTitle, label_1, input_text_title, label_2,input_text_description, label_3, input_text_duedate, buttonArea)
     
     let div = document.createElement('div')
                     div.classList.add("project-list")
     
         let availableProjects = getProjectList()
-            availableProjects.forEach((el)=>{
+            availableProjects.forEach((el)=>{ 
+                if(el.title !== "Completed"){
                 let container = document.createElement('section')
                 let label = document.createElement('label')
                     label.textContent = el.title;
@@ -58,6 +65,7 @@ const newElementForm = function (){
                 container.append(label,check)
                 div.append(container)
                 form.append(div)
+                }
             })
     formContainer.appendChild(form)
 
@@ -76,16 +84,19 @@ const newProjectForm = function(){
     const input_text_title = document.createElement('input')
         input_text_title.setAttribute('id', 'title')
 
+    const buttonArea = document.createElement('div')
+        buttonArea.classList.add('buttons')    
     const submitButton = document.createElement('button')
         submitButton.textContent = 'Create!'
         submitButton.type = 'button'
         submitButton.addEventListener('click', createProject)
 
     const cancelButton = document.createElement('button')
+        cancelButton.addEventListener('click', removeForm)
         cancelButton.textContent = 'Cancel'
         cancelButton.type = 'reset'
-
-    form.append(formTitle,label_1,input_text_title,submitButton, cancelButton)
+    buttonArea.append(submitButton,cancelButton)
+    form.append(formTitle,label_1,input_text_title,buttonArea)
     formContainer.appendChild(form)
     return formContainer
 }
