@@ -20,7 +20,7 @@ const initialPage = function(){
             const titleAndSvg = document.createElement('div')
             titleAndSvg.classList.add('logo')
             const svg = document.createElement('img')
-            svg.src = "./src/check.svg"
+            svg.src = "/src/check.svg"
         
             titleAndSvg.appendChild(svg)
             const title = document.createElement('h1')
